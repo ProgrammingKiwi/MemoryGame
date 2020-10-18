@@ -11,20 +11,21 @@ import frames.GameFrame;
 public class MemoryBot {
 
     private int difficulty;
-    private ArrayList<Integer> numbers = new ArrayList<Integer>();
+    private ArrayList<Integer> numbers = new ArrayList<>();
     private ArrayList<JButton> buttons;
-    public static ArrayList<JButton> revealed = new ArrayList<JButton>(), stillfree = new ArrayList<JButton>();
+    public static ArrayList<JButton> revealed = new ArrayList<>(), stillfree = new ArrayList<>();
     private static JButton clickedrn = null;
     private static int temporary = -1;
     public static boolean justwon = false;
     public static boolean justwon2 = false;
+    private boolean smort = false;
 
-    public MemoryBot(int difficulty, ArrayList<JButton> buttons) {
+    public MemoryBot(int difficulty, ArrayList<JButton> buttons, boolean smart) {
         this.difficulty = difficulty;
         this.buttons = buttons;
-        for (JButton jButton : buttons) {
-            stillfree.add(jButton);
-        }
+        this.smort = smart;
+        
+        stillfree.addAll(buttons);
 
         for (int i = 0; i < 16; i++) {
             numbers.add(-1);
@@ -107,10 +108,14 @@ public class MemoryBot {
 
         JButton b = stillfree.get(rnd);
 
+
         if (!revealed.contains(b)) {
             b.setEnabled(true);
             b.doClick();
             clickedrn = b;
+            if(smort) {
+                temporary = numbers.get(buttons.indexOf(b));
+            }
         }
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
@@ -139,18 +144,15 @@ public class MemoryBot {
             }
         }
         if (b) {
-            b = false;
 
             JButton bt = buttons.get(numbers.indexOf(number));
             // numbers.set(numbers.indexOf(number), -1);
             temporary = number;
-            number = -1;
             bt.setEnabled(true);
             bt.doClick();
 
             clickedrn = bt;
 
-            b = false;
             Timer t = new Timer();
             TimerTask tt = new TimerTask() {
 
@@ -193,8 +195,8 @@ public class MemoryBot {
         JButton b = stillfree.get(rnd);
 
         if (stillfree.size() == 1) {
-            stillfree.get(1).setEnabled(true);
-            stillfree.get(1).doClick();
+            stillfree.get(0).setEnabled(true);
+            stillfree.get(0).doClick();
         }
 
         if (!revealed.contains(b)) {
@@ -212,7 +214,15 @@ public class MemoryBot {
         if (temporary != -1) {
             if (numbers.lastIndexOf(temporary) != -1 && !revealed.contains(buttons.get(numbers.lastIndexOf(temporary)))
                     && numbers.indexOf(temporary) != numbers.lastIndexOf(temporary)) {
-                JButton b = buttons.get(numbers.lastIndexOf(temporary));
+                JButton b2 = buttons.get(numbers.lastIndexOf(temporary));
+                JButton b1 = buttons.get(numbers.indexOf(temporary));
+                JButton b = null;
+                if(b1 != clickedrn) {
+                    b = b1;
+                } else if(b2 != clickedrn) {
+                    b = b2;
+                }
+
                 if (b != clickedrn) {
                     b.setEnabled(true);
                     b.doClick();
@@ -226,7 +236,6 @@ public class MemoryBot {
 
                     temporary = -1;
                     clickedrn = null;
-                    b = null;
                 }
             } else {
                 secondGuessEasy();
@@ -298,19 +307,6 @@ public class MemoryBot {
         stillfree.clear();
         clickedrn = null;
         buttons = null;
-    }
-
-    public int getAmountofNumberinNumber(ArrayList<Integer> al, int si) {
-
-        int i = 0;
-
-        for (Integer integer : al) {
-            if (integer == si) {
-                i++;
-            }
-        }
-
-        return i;
     }
 
 }
