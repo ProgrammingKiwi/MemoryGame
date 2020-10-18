@@ -56,7 +56,8 @@ public class StartFrame extends JFrame implements ActionListener{
             new GameFrame("Game");
             dispose();
         } else if(e.getSource() == info) {
-            JOptionPane.showMessageDialog(null, "Version 2.0, mehrere Motive, Punktezähler, Gewinnansage, Reset, Menü enthalten.");
+            JOptionPane.showMessageDialog(null, "Version 3.0, includes multiple motives, counter, winner, reset, menu and a bot. Coded by " +
+                    "ProgrammingKiwi");
         } else if(e.getSource() == options) {
             new OptionFrame("Options");
         } else if(e.getSource() == end) {
