@@ -18,13 +18,14 @@ public class OptionFrame extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
     private JLabel botLabel, botplaylabel, botdifficultyLabel;
     private String[] Stringlist = { "Fruits", "Animals", "Colors"};
-    private String[] DifficultyList = { "Leicht", "Mittel", "Schwer", "Sehr schwer", "Unmöglich"};
+    private String[] DifficultyList = { "Easy", "Medium", "Hard", "Very hard", "Impossible"};
     private JComboBox<String> list, list2;
     private JButton best;
     public static String chosen = "Fruits";
     public static int diff = 0;
+    public static boolean smart = false;
     public static boolean bot = false, player = false;
-    private JRadioButton check1, check2, check3, check4;
+    private JRadioButton check1, check2, check3, check4, check5, check6;
 
     public OptionFrame(String title) {
 
@@ -62,7 +63,7 @@ public class OptionFrame extends JFrame implements ActionListener {
         list2 = new JComboBox<String>(DifficultyList);
         list2.setBounds(150, 250, 200, 30);
         list2.addActionListener(this);
-        switch (diff) {
+        /*switch (diff) {
             case 0:
                 list2.setSelectedIndex(0);
                 break;
@@ -77,26 +78,27 @@ public class OptionFrame extends JFrame implements ActionListener {
                 break;
             default:
                 list2.setSelectedIndex(0);
-        }
+        } */
+        list2.setSelectedIndex(diff);
         add(list2);
 
         botLabel = new JLabel("Bot");
         botLabel.setBounds(150, 100, 100, 20);
         add(botLabel);
 
-        botdifficultyLabel = new JLabel("Schwierigkeit");
+        botdifficultyLabel = new JLabel("Difficulty");
         botdifficultyLabel.setBounds(150, 220, 100, 20);
         add(botdifficultyLabel);
 
-        check1 = new JRadioButton("Ja");
-        check1.setBounds(150, 130, 40, 20);
+        check1 = new JRadioButton("Yes");
+        check1.setBounds(150, 130, 50, 20);
         check1.addActionListener(this);
         if (bot) {
             check1.setSelected(true);
         }
         add(check1);
 
-        check2 = new JRadioButton("Nein");
+        check2 = new JRadioButton("No");
         check2.setBounds(200, 130, 60, 20);
         if (!bot) {
             check2.setSelected(true);
@@ -104,7 +106,7 @@ public class OptionFrame extends JFrame implements ActionListener {
         check2.addActionListener(this);
         add(check2);
 
-        botplaylabel = new JLabel("Bot als Spieler");
+        botplaylabel = new JLabel("Bot as player");
         botplaylabel.setBounds(150, 160, 100, 20);
         add(botplaylabel);
 
@@ -124,14 +126,40 @@ public class OptionFrame extends JFrame implements ActionListener {
         check4.addActionListener(this);
         add(check4);
 
+        check5 = new JRadioButton("Smart");
+        check5.setBounds(150, 290, 70, 20);
+        if (smart) {
+            check5.setSelected(true);
+        }
+        add(check5);
+
+        check6 = new JRadioButton("Stupid");
+        check6.setBounds(220, 290, 70, 20);
+        if(!smart) {
+            check6.setSelected(true);
+        }
+        add(check6);
+
+        if(diff != 0) {
+            check5.setEnabled(true);
+            check6.setEnabled(true);
+        } else {
+            check5.setEnabled(false);
+            check6.setEnabled(false);
+        }
+
         ButtonGroup group = new ButtonGroup();
         ButtonGroup group2 = new ButtonGroup();
+        ButtonGroup group3 = new ButtonGroup();
 
         group.add(check1);
         group.add(check2);
 
         group2.add(check3);
         group2.add(check4);
+
+        group3.add(check5);
+        group3.add(check6);
 
         setVisible(true);
 
@@ -152,6 +180,23 @@ public class OptionFrame extends JFrame implements ActionListener {
                 player = true;
             } else {
                 player = false;
+            }
+            if (check5.isSelected()) {
+                smart = true;
+            } else {
+                smart = false;
+            }
+        } else if(e.getSource() == list2) {
+            if(list2 != null) {
+                if(check5 != null && check6 != null) {
+                    if(list2.getSelectedIndex() != 0) {
+                        check5.setEnabled(true);
+                        check6.setEnabled(true);
+                    } else {
+                        check5.setEnabled(false);
+                        check6.setEnabled(false);
+                    }
+                }else System.out.println("Halt die Fresse Conrad!");
             }
         }
     }
