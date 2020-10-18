@@ -35,6 +35,7 @@ public class GameFrame extends JFrame implements ActionListener {
     private Timer tw = new Timer();
     private MemoryBot mb;
     private int difficulty = OptionFrame.diff;
+    private boolean smart = OptionFrame.smart;
 
     private Icon iconr, icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8;
 
@@ -130,7 +131,7 @@ public class GameFrame extends JFrame implements ActionListener {
         setVisible(true);
 
         if (OptionFrame.bot) {
-            mb = new MemoryBot(difficulty, buttons);
+            mb = new MemoryBot(difficulty, buttons, smart);
 
             if (OptionFrame.player) {
                 mb.play();
@@ -145,7 +146,7 @@ public class GameFrame extends JFrame implements ActionListener {
 
             if (OptionFrame.bot) {
                 mb.delete();
-                mb = new MemoryBot(difficulty, buttons);
+                mb = new MemoryBot(difficulty, buttons, smart);
 
                 if (OptionFrame.player) {
                     mb.play();
@@ -213,7 +214,7 @@ public class GameFrame extends JFrame implements ActionListener {
                                 if(isBot()) {
                                     mb.setNumber(i, integers.get(i));
                                 }
-                            } else if(difficulty == 2 || difficulty == 3){
+                            } else if(difficulty >= 2){
                                 mb.setNumber(i, integers.get(i));
                             }
                         }
@@ -247,7 +248,7 @@ public class GameFrame extends JFrame implements ActionListener {
                                 if(isBot()) {
                                     mb.setNumber(i, integers.get(i));
                                 }
-                            } else if(difficulty == 2 || difficulty == 3){
+                            } else if(difficulty >= 2){
                                 mb.setNumber(i, integers.get(i));
                             }
                         }
